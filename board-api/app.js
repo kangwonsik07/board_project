@@ -7,6 +7,7 @@ const passport = require('passport')
 const cookieParser = require('cookie-parser') // 쿠키 처리 미들웨어
 const session = require('express-session') // 세션 관리 미들웨어
 
+const indexRouter = require('./routes')
 const authRouter = require('./routes/auth')
 const { sequelize } = require('./models')
 const passportConfig = require('./passport')
@@ -53,10 +54,24 @@ app.use(
 app.use(passport.initialize()) //초기화
 app.use(passport.session()) // passport와 생성해둔 세션 연결
 
+app.use('/', indexRouter)
+app.use('/auth', authRouter)
+
+// 잘못된 라우터 경로 처리
+app.use((req, res, next) => {
+   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`) // 에러객체 생성
+   error.status = 404 // 404에러코드 설정
+   next(error) // 에러 미들웨어로 전달
+})
+
 //에러 미들웨어
 app.use((err, req, res, next) => {
-   const statusCode = err.status || 500
+   const statusCode = err.status || 500 //err.status가 있으면 err.status 저장 없으면 500
    const errorMessage = err.message || '서버 내부 오류'
+
+   // 개발 중에 서버 콘솔에서 상세한 에러 확인 용도
+   console.log(err)
+
    res.status(statusCode).json({
       success: false,
       message: errorMessage,
@@ -64,7 +79,7 @@ app.use((err, req, res, next) => {
    })
 })
 
-app.options('*', cors())
+app.options('*', cors()) // 모든 경로에 대한 options 요청을 허용
 app.listen(app.get('port'), () => {
    console.log(app.get('port'), '번 포트에서 대기중')
 })
