@@ -11,6 +11,7 @@ const indexRouter = require('./routes')
 const authRouter = require('./routes/auth')
 const { sequelize } = require('./models')
 const passportConfig = require('./passport')
+const postRouter = require('./routes/post')
 
 const app = express()
 passportConfig()
@@ -56,6 +57,7 @@ app.use(passport.session()) // passport와 생성해둔 세션 연결
 
 app.use('/', indexRouter)
 app.use('/auth', authRouter)
+app.use('/create', postRouter)
 
 // 잘못된 라우터 경로 처리
 app.use((req, res, next) => {

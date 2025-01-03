@@ -43,7 +43,7 @@ const upload = multer({
 router.post('/signup', isNotLoggenIn, upload.single('img'), async (req, res, next) => {
    console.log('수신된 데이터:', req.body)
    const { email, nick, password, description } = req.body
-   const img = req.file ? req.file.path : null
+   const img = req.file.filename
    console.log('파일 정보:', req.file)
    // 이메일로 기존사용자 검색
    try {
@@ -149,6 +149,9 @@ router.get('/status', async (req, res, next) => {
          user: {
             id: req.user.id,
             nick: req.user.nick,
+            email: req.user.email,
+            img: req.user.img,
+            description: req.user.description,
          },
       })
    } else {
