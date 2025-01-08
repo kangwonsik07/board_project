@@ -14,11 +14,11 @@ module.exports = class Post extends Sequelize.Model {
             },
             views: {
                type: Sequelize.INTEGER,
-               allowNull: false,
+               allowNull: true,
             },
             like: {
                type: Sequelize.INTEGER,
-               allowNull: false,
+               allowNull: true,
             },
          },
          {

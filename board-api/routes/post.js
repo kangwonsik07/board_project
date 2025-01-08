@@ -9,7 +9,9 @@ router.post('/create', isLoggedIn, async (req, res) => {
          title: req.body.title,
          content: req.body.content,
          UserId: req.user.id,
-         BoardId: req.board.id,
+         // BoardId: req.board.id,
+         like: req.body.like,
+         view: req.body.view,
       })
 
       res.json({
@@ -18,7 +20,9 @@ router.post('/create', isLoggedIn, async (req, res) => {
             title: post.title,
             content: post.content,
             UserId: post.UserId,
-            BoardId: post.BoardId,
+            // BoardId: post.BoardId,
+            like: post.like,
+            view: post.view,
          },
          message: '게시물이 등록되었습니다',
       })
